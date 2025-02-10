@@ -1,6 +1,7 @@
 const express = require('express');
 const authRoutes = require('./authRoutes');
 const uploadRoutes = require('./uploadRoutes');
+const editContentRoutes = require('./contentRoutes')
 
 const router = express.Router();
 
@@ -9,5 +10,6 @@ const router = express.Router();
 // Use the route modules
 router.use('/users', authRoutes);
 router.use('/uploads', uploadRoutes);
+router.use('/edit-content', editContentRoutes);
 
 module.exports = router;
