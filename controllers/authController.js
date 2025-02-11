@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        let user = await User.findOne({ email });
+        let user = await User.findOne({ where: { email } });
         if (!user) {
             return res.status(400).json({ msg: 'Invalid Credentials' });
         }
@@ -86,7 +86,7 @@ exports.resetPassword = async (req, res) => {
     const { email, newPassword } = req.body;
 
     try {
-        let user = await User.findOne({ email });
+        let user = await User.findOne({ where: { email } });
         if (!user) {
             return res.status(400).json({ msg: 'User not found' });
         }

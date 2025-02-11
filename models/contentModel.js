@@ -14,6 +14,10 @@ const EditContent = sequelize.define('content', {
     content: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    content_type: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, { 
     timestamps: true,  // Automatically creates createdAt and updatedAt
