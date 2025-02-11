@@ -13,23 +13,23 @@ router.post('/add/testimonials', contentController.addTestimonials);
 router.post('/update/testimonials', contentController.updateTestimonials);
 
 // Our Work edit-content
-router.post('/add/ourWork', contentController.addOurWorkContent);
-router.post('/update/ourWork', contentController.updateOurWorkContent);
+router.post('/add/ourWork', contentController.addConentPortfolio);
+router.post('/update/ourWork', contentController.updatePortfolio);
 
 // Client Gallery edit-content
-router.post('/add/clientGallery', contentController.addClientGalleryContent);
-router.post('/update/clientGallery', contentController.updateClientGalleryContent);
+router.post('/add/clientGallery', contentController.addConentPortfolio);
+router.post('/update/clientGallery', contentController.updatePortfolio);
 
 // Our Stories edit-content
-router.post('/add/ourStories', contentController.addOurStoriesContent);
-router.post('/update/ourStories', contentController.updateOurStoriesContent);
+router.post('/add/ourStories', contentController.addTestimonials);
+router.post('/update/ourStories', contentController.updateTestimonials);
 
 // Other Service edit-content
-router.post('/add/otherService', contentController.addOtherServiceContent);
-router.post('/update/otherService', contentController.updateOtherServiceContent);
+router.post('/add/otherService', contentController.addConentPortfolio);
+router.post('/update/otherService', contentController.updatePortfolio);
 
 // Other Service with Logo edit-content
-router.post('/add/otherService/logo', contentController.addOtherServiceWithLogoContent);
-router.post('/update/otherService/logo', contentController.updateOtherServiceWithLogoContent);
+router.post('/add/otherService/logo', contentController.addTestimonials);
+router.post('/update/otherService/logo', contentController.updateTestimonials);
 
 module.exports = router;
