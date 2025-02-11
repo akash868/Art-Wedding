@@ -29,18 +29,18 @@ router.get("/contactUs", getImages("contactUs"));
 router.put("/contactUs", updateImage("contactUs"));
 
 // 📰 Our Stories (Add, Update, Get)
-router.post("ourStories", upload.single("image"), uploadImage("ourStories"));
-router.get("ourStories", getImages("ourStories"));
-router.put("ourStories", updateImage("ourStories"));
+router.post("/ourStories", upload.single("image"), uploadImage("ourStories"));
+router.get("/ourStories", getImages("ourStories"));
+router.put("/ourStories", updateImage("ourStories"));
 
 // 📲 Follow Us (Add, Update, Get)
-router.post("followUs", upload.single("image"), uploadImage("followUs"));
-router.get("followUs", getImages("followUs"));
-router.put("followUs", updateImage("followUs"));
+router.post("/followUs", upload.single("image"), uploadImage("followUs"));
+router.get("/followUs", getImages("followUs"));
+router.put("/followUs", updateImage("followUs"));
 
 // 🎉 Other Services (Add, Update, Get)
-router.post("otherServices", upload.single("image"), uploadImage("otherServices"));
-router.get("otherServices", getImages("otherServices"));
-router.put("otherServices", updateImage("otherServices"));
+router.post("/otherServices", upload.single("image"), uploadImage("otherServices"));
+router.get("/otherServices", getImages("otherServices"));
+router.put("/otherServices", updateImage("otherServices"));
 
 module.exports = router;
