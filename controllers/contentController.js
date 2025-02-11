@@ -1,5 +1,5 @@
 
-const { Content } = require('../models/contentModel'); 
+const Content = require('../models/contentModel'); 
 
 // Add Portfolio Content
 const addConentPortfolio = async (req, res) => {

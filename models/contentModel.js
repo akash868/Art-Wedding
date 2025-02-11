@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/dbConfig');
 
-const EditContent = sequelize.define('admin_user', {
+const EditContent = sequelize.define('content', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -14,16 +14,11 @@ const EditContent = sequelize.define('admin_user', {
     content: {
         type: DataTypes.STRING,
         allowNull: true
-    },
-    created_at: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.now
-    },
-    updated_at: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.now
-    },
-}, { timestamps: true });
+    }
+}, { 
+    timestamps: true,  // Automatically creates createdAt and updatedAt
+    tableName: 'content' // Ensure table name matches
+});
 
 sequelize.sync();
 
