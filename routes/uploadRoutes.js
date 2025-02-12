@@ -6,10 +6,10 @@ const router = express.Router();
 
 // 🏠 Home Image
 router.post("/homeImage", authMiddleware, upload.single("image"), uploadImageBasedOnUser);
-router.get("/homeImage", authMiddleware, getImagesByCategory);
+router.get("/homeImage", getImagesByCategory);
 
 // router.post("/homeImage", authMiddleware, upload.single("image"), uploadImage());
-router.get("/homeImage", getImages("homeImage"));
+// router.get("/homeImage", getImages("homeImage"));
 
 // 📋 List Images (Add, Update, Get, Delete)
 router.post("/listImages", authMiddleware, upload.single("image"), uploadImage("listImages"));
