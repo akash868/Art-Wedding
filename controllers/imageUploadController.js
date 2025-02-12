@@ -30,6 +30,36 @@ const uploadImage = (category) => async (req, res) => {
   }
 };
 
+const uploadImageBasedOnUser = async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: "Please upload an image" });
+
+    const { category } = req.body; // Extract category from request body
+    const imageUrl = req.file.location;
+
+    if (!category) return res.status(400).json({ error: "Category is required" });
+
+    const newImage = await Image.create({ category, imageUrl });
+
+    res.json({ message: "Image uploaded successfully", image: newImage });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getImagesByCategory = async (req, res) => {
+  try {
+    const { category } = req.query; // Get category from query parameters
+    if (!category) return res.status(400).json({ error: "Category is required" });
+
+    const images = await Image.findAll({ where: { category } });
+
+    res.json({ images });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // 🔹 Get All Images for Category
 const getImages = (category) => async (req, res) => {
   try {
@@ -109,4 +139,4 @@ const deleteImage = (category) => async (req, res) => {
 };
 
 
-module.exports = { upload, uploadImage, getImages, updateImage, deleteImage };
+module.exports = { upload, uploadImage, getImages, updateImage, deleteImage, uploadImageBasedOnUser, getImagesByCategory };

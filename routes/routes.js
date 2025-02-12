@@ -10,6 +10,6 @@ const router = express.Router();
 // Use the route modules
 router.use('/users', authRoutes);
 router.use('/uploads', uploadRoutes);
-router.use('/edit-content', editContentRoutes);
+router.use('/content', editContentRoutes);
 
 module.exports = router;

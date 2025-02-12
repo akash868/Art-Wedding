@@ -56,7 +56,7 @@ const addTestimonials = (content_type) => async (req, res) => {
     }
 
     const newTestimonial = await Content.create({ content, name, content_type });
-    res.status(201).json({ message: 'Testimonial saved successfully', contentId: newTestimonial.id });
+    res.status(201).json({ message: 'Content saved successfully', contentId: newTestimonial.id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Database error' });

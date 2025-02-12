@@ -1,11 +1,14 @@
 const express = require("express");
-const { upload, uploadImage, getImages, updateImage, deleteImage } = require("../controllers/imageUploadController");
+const { upload, uploadImage, getImages, updateImage, deleteImage, uploadImageBasedOnUser, getImagesByCategory } = require("../controllers/imageUploadController");
 const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // 🏠 Home Image
-router.post("/homeImage", authMiddleware, upload.single("image"), uploadImage("homeImage"));
+router.post("/homeImage", authMiddleware, upload.single("image"), uploadImageBasedOnUser);
+router.get("/homeImage", authMiddleware, getImagesByCategory);
+
+// router.post("/homeImage", authMiddleware, upload.single("image"), uploadImage());
 router.get("/homeImage", getImages("homeImage"));
 
 // 📋 List Images (Add, Update, Get, Delete)
