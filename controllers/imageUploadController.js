@@ -43,18 +43,43 @@ const getImages = (category) => async (req, res) => {
 // 🔹 Update Image by ID
 const updateImage = (category) => async (req, res) => {
   try {
-    const { id, newImageUrl } = req.body;
-    if (!id || !newImageUrl) return res.status(400).json({ error: "ID and newImageUrl required" });
+    const { id } = req.body;
+    if (!id || !req.file) {
+      return res.status(400).json({ error: "ID and new image required" });
+    }
 
+    // Find existing image in DB
     const image = await Image.findOne({ where: { id, category } });
-    if (!image) return res.status(404).json({ error: "Image not found" });
+    if (!image) {
+      return res.status(404).json({ error: "Image not found" });
+    }
 
+    const oldImageUrl = image.imageUrl;
+    const newImageUrl = req.file.location; // New S3 Image URL
+
+    // Delete old image from S3 (only if it exists)
+    if (oldImageUrl) {
+      try {
+        const oldKey = oldImageUrl.split(".com/")[1];
+        await s3.send(
+          new DeleteObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: oldKey,
+          })
+        );
+      } catch (err) {
+        console.error("Error deleting old image from S3:", err);
+      }
+    }
+
+    // Update database with new image URL
     image.imageUrl = newImageUrl;
     await image.save();
 
-    res.json({ message: "Image updated successfully" });
+    res.json({ message: "Image updated successfully", imageUrl: newImageUrl });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error updating image:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
