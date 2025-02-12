@@ -1,4 +1,3 @@
-
 const Content = require('../models/contentModel'); 
 
 // Add Portfolio Content
@@ -9,6 +8,12 @@ const addConentPortfolio = (content_type) => async (req, res) => {
   }
 
   try {
+    // Check if content_type already exists
+    const existingContent = await Content.findOne({ where: { content_type } });
+    if (existingContent) {
+      return res.status(400).json({ error: 'Content already exists for this type' });
+    }
+
     const newContent = await Content.create({ content, content_type });
     res.status(201).json({ message: 'Content saved successfully', contentId: newContent.id });
   } catch (error) {
@@ -44,6 +49,12 @@ const addTestimonials = (content_type) => async (req, res) => {
   }
 
   try {
+    // Check if content_type already exists
+    const existingTestimonial = await Content.findOne({ where: { content_type } });
+    if (existingTestimonial) {
+      return res.status(400).json({ error: 'Content already exists for this type' });
+    }
+
     const newTestimonial = await Content.create({ content, name, content_type });
     res.status(201).json({ message: 'Testimonial saved successfully', contentId: newTestimonial.id });
   } catch (error) {
@@ -73,7 +84,6 @@ const updateTestimonials = (content_type) => async (req, res) => {
 
 // Get Content Based on content_type
 const getEditContent = (content_type) => async (req, res) => {
-
   try {
     const contentData = await Content.findAll({ where: { content_type } });
     if (contentData.length === 0) {
@@ -87,9 +97,9 @@ const getEditContent = (content_type) => async (req, res) => {
 };
 
 module.exports = {
-    addConentPortfolio,
-    getEditContent,
-    addTestimonials,
-    updatePortfolio,
-    updateTestimonials,
-}
+  addConentPortfolio,
+  getEditContent,
+  addTestimonials,
+  updatePortfolio,
+  updateTestimonials,
+};
