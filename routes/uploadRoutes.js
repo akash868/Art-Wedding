@@ -1,5 +1,14 @@
 const express = require("express");
-const { upload, uploadImage, getImages, updateImage, deleteImage, uploadImageBasedOnUser, getImagesByCategory } = require("../controllers/imageUploadController");
+const {
+  upload,
+  uploadImage,
+  getImages,
+  updateImage,
+  deleteImage,
+  uploadImageBasedOnUser,
+  getImagesByCategory,
+  checkImageLimit
+} = require("../controllers/imageUploadController");
 const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -8,42 +17,39 @@ const router = express.Router();
 router.post("/homeImage", authMiddleware, upload.single("image"), uploadImageBasedOnUser);
 router.get("/homeImage", getImagesByCategory);
 
-// router.post("/homeImage", authMiddleware, upload.single("image"), uploadImage());
-// router.get("/homeImage", getImages("homeImage"));
-
-// 📋 List Images (Add, Update, Get, Delete)
+// 📋 List Images (No Limit)
 router.post("/listImages", authMiddleware, upload.single("image"), uploadImage("listImages"));
 router.get("/listImages", getImages("listImages"));
 router.put("/listImages", authMiddleware, upload.single("image"), updateImage("listImages"));
 router.delete("/listImages", authMiddleware, deleteImage("listImages"));
 
-// 🌟 Testimonials (Add, Update, Get)
-router.post("/testimonials", authMiddleware, upload.single("image"), uploadImage("testimonials"));
+// 🌟 Testimonials (Max 5 Images)
+router.post("/testimonials", authMiddleware, upload.single("image"), checkImageLimit("testimonials", 5), uploadImage("testimonials"));
 router.get("/testimonials", getImages("testimonials"));
 router.put("/testimonials", authMiddleware, upload.single("image"), updateImage("testimonials"));
 
-// 📸 Client Gallery (Add, Update, Get)
-router.post("/clientGallery", authMiddleware, upload.single("image"), uploadImage("clientGallery"));
+// 📸 Client Gallery (Max 3 Images)
+router.post("/clientGallery", authMiddleware, upload.single("image"), checkImageLimit("clientGallery", 3), uploadImage("clientGallery"));
 router.get("/clientGallery", getImages("clientGallery"));
 router.put("/clientGallery", authMiddleware, upload.single("image"), updateImage("clientGallery"));
 
-// 📞 Contact Us (Add, Update, Get)
-router.post("/contactUs", authMiddleware, upload.single("image"), uploadImage("contactUs"));
+// 📞 Contact Us (Max 1 Image)
+router.post("/contactUs", authMiddleware, upload.single("image"), checkImageLimit("contactUs", 1), uploadImage("contactUs"));
 router.get("/contactUs", getImages("contactUs"));
 router.put("/contactUs", authMiddleware, upload.single("image"), updateImage("contactUs"));
 
-// 📰 Our Stories (Add, Update, Get)
-router.post("/ourStories", authMiddleware, upload.single("image"), uploadImage("ourStories"));
+// 📰 Our Stories (Max 1 Image)
+router.post("/ourStories", authMiddleware, upload.single("image"), checkImageLimit("ourStories", 1), uploadImage("ourStories"));
 router.get("/ourStories", getImages("ourStories"));
 router.put("/ourStories", authMiddleware, upload.single("image"), updateImage("ourStories"));
 
-// 📲 Follow Us (Add, Update, Get)
-router.post("/followUs", authMiddleware, upload.single("image"), uploadImage("followUs"));
+// 📲 Follow Us (Max 3 Images)
+router.post("/followUs", authMiddleware, upload.single("image"), checkImageLimit("followUs", 3), uploadImage("followUs"));
 router.get("/followUs", getImages("followUs"));
 router.put("/followUs", authMiddleware, upload.single("image"), updateImage("followUs"));
 
-// 🎉 Other Services (Add, Update, Get)
-router.post("/otherServices", authMiddleware, upload.single("image"), uploadImage("otherServices"));
+// 🎉 Other Services (Max 3 Images)
+router.post("/otherServices", authMiddleware, upload.single("image"), checkImageLimit("otherServices", 3), uploadImage("otherServices"));
 router.get("/otherServices", getImages("otherServices"));
 router.put("/otherServices", authMiddleware, upload.single("image"), updateImage("otherServices"));
 
