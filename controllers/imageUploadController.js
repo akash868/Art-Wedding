@@ -78,8 +78,11 @@ const getImagesByCategory = async (req, res) => {
 // Get Images for Specific Category
 const getImages = (category) => async (req, res) => {
   try {
-    const images = await Image.findAll({ where: { category }, attributes: ["id", "imageUrl"] });
-    res.json({ images });
+    const images = await Image.findAll({ 
+      where: { category }  // Fetch images by category
+    });
+    
+    res.json({ images });  // Send full image data
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
