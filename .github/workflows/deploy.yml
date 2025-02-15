@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - main  # Change if using a different branch
+      - main
 
 jobs:
   deploy:
@@ -12,20 +12,30 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set Up Environment Variables
+      - name: Deploy to Server
+        env:
+          PORT: ${{ vars.PORT }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          AWS_BUCKET_NAME: ${{ vars.AWS_BUCKET_NAME }}
+          DB_HOST: ${{ vars.DB_HOST }}
+          DB_USER: ${{ vars.DB_USER }}
+          DB_PASS: ${{ vars.DB_PASS }}
+          DB_NAME: ${{ vars.DB_NAME }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
-          echo "PORT=${{ vars.PORT }}" >> $GITHUB_ENV
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
-          echo "AWS_REGION=${{ vars.AWS_REGION }}" >> $GITHUB_ENV
-          echo "AWS_BUCKET_NAME=${{ vars.AWS_BUCKET_NAME }}" >> $GITHUB_ENV
-          echo "DB_HOST=${{ vars.DB_HOST }}" >> $GITHUB_ENV
-          echo "DB_USER=${{ vars.DB_USER }}" >> $GITHUB_ENV
-          echo "DB_PASS=${{ vars.DB_PASS }}" >> $GITHUB_ENV
-          echo "DB_NAME=${{ vars.DB_NAME }}" >> $GITHUB_ENV
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
-
-      - name: Verify Environment Variables
-        run: |
-          echo "PORT is set to $PORT"
-          echo "AWS_REGION is set to $AWS_REGION"
+          ssh ubuntu@your-server-ip << 'EOF'
+            cd ~/Art-Wedding  # Change this to your actual project path
+            echo "PORT=$PORT" > .env
+            echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> .env
+            echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
+            echo "AWS_REGION=$AWS_REGION" >> .env
+            echo "AWS_BUCKET_NAME=$AWS_BUCKET_NAME" >> .env
+            echo "DB_HOST=$DB_HOST" >> .env
+            echo "DB_USER=$DB_USER" >> .env
+            echo "DB_PASS=$DB_PASS" >> .env
+            echo "DB_NAME=$DB_NAME" >> .env
+            echo "JWT_SECRET=$JWT_SECRET" >> .env
+            echo "✅ Environment variables saved in .env"
+          EOF
