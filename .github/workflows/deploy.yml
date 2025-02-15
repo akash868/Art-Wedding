@@ -12,6 +12,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Debug GitHub Environment Variables
+        run: |
+          echo "🔍 Checking GitHub variables..."
+          echo "PORT=${{ vars.PORT }}"
+          echo "AWS_REGION=${{ vars.AWS_REGION }}"
+          echo "AWS_BUCKET_NAME=${{ vars.AWS_BUCKET_NAME }}"
+          echo "DB_HOST=${{ vars.DB_HOST }}"
+          echo "DB_USER=${{ vars.DB_USER }}"
+          echo "DB_PASS=${{ vars.DB_PASS }}"
+          echo "DB_NAME=${{ vars.DB_NAME }}"
+
       - name: Set Up SSH Key
         run: |
           mkdir -p ~/.ssh
@@ -22,9 +33,10 @@ jobs:
       - name: Deploy to Server
         run: |
           ssh -i ~/.ssh/deploy_key ubuntu@ip-172-31-0-56 << EOF
-            cd ~/Art-Wedding  # Change this to your actual project path
-            
-            # Create .env file with environment variables from GitHub
+            mkdir -p ~/Art-Wedding
+            cd ~/Art-Wedding
+
+            echo "🔍 Creating .env file..."
             cat <<EOT > .env
             PORT=${{ vars.PORT }}
             AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -38,8 +50,9 @@ jobs:
             JWT_SECRET=${{ secrets.JWT_SECRET }}
             EOT
 
-            echo "✅ Environment variables saved in .env"
+            echo "✅ .env file created:"
+            cat .env  # Display the .env content for debugging (remove later)
 
-            # Restart your Node.js application using PM2 (or another process manager)
+            # Restart your Node.js application
             pm2 restart server || pm2 start server.js --name server
           EOF
