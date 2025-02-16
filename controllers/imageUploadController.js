@@ -118,6 +118,36 @@ const updateImage = (category) => async (req, res) => {
   }
 };
 
+// Update Image by ID Based on User Input Category
+const updateImageBasedOnUserCategory = async (req, res) => {
+  try {
+    const { id, category } = req.body;
+    if (!id || !category || !req.file) return res.status(400).json({ error: "ID, category, and new image required" });
+
+    const image = await Image.findOne({ where: { id, category } });
+    if (!image) return res.status(404).json({ error: "Image not found" });
+
+    const oldImageUrl = image.imageUrl;
+    const newImageUrl = req.file.location;
+
+    if (oldImageUrl) {
+      try {
+        const oldKey = oldImageUrl.split(".com/")[1];
+        await s3.send(new DeleteObjectCommand({ Bucket: process.env.AWS_BUCKET_NAME, Key: oldKey }));
+      } catch (err) {
+        console.error("Error deleting old image:", err);
+      }
+    }
+
+    image.imageUrl = newImageUrl;
+    await image.save();
+
+    res.json({ message: "Image updated successfully", imageUrl: newImageUrl });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 // Delete Image by ID
 const deleteImage = (category) => async (req, res) => {
   try {
@@ -137,4 +167,4 @@ const deleteImage = (category) => async (req, res) => {
   }
 };
 
-module.exports = { upload, uploadImage, getImages, updateImage, deleteImage, uploadImageBasedOnUser, getImagesByCategory, checkImageLimit };
+module.exports = { upload, uploadImage, getImages, updateImage, deleteImage, uploadImageBasedOnUser, getImagesByCategory, checkImageLimit, updateImageBasedOnUserCategory };

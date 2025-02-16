@@ -7,7 +7,8 @@ const {
   deleteImage,
   uploadImageBasedOnUser,
   getImagesByCategory,
-  checkImageLimit
+  checkImageLimit,
+  updateImageBasedOnUserCategory
 } = require("../controllers/imageUploadController");
 const authMiddleware = require('../middleware/authMiddleware');
 
@@ -15,6 +16,7 @@ const router = express.Router();
 
 // 🏠 Home Image
 router.post("/homeImage", authMiddleware, upload.single("image"), uploadImageBasedOnUser);
+router.put("/homeImage", authMiddleware, upload.single("image"), updateImageBasedOnUserCategory);
 router.get("/homeImage", getImagesByCategory);
 
 // 📋 List Images (No Limit)
@@ -44,7 +46,7 @@ router.get("/ourStories", getImages("ourStories"));
 router.put("/ourStories", authMiddleware, upload.single("image"), updateImage("ourStories"));
 
 // 📲 Follow Us (Max 3 Images)
-router.post("/followUs", authMiddleware, upload.single("image"), checkImageLimit("followUs", 3), uploadImage("followUs"));
+router.post("/followUs", authMiddleware, upload.single("image"), checkImageLimit("followUs", 6), uploadImage("followUs"));
 router.get("/followUs", getImages("followUs"));
 router.put("/followUs", authMiddleware, upload.single("image"), updateImage("followUs"));
 
