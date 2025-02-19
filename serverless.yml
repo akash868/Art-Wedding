@@ -1,0 +1,22 @@
+service: my-node-app
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1  # Change to your AWS region
+  memorySize: 128  # Adjust as needed
+  timeout: 10
+  environment:
+    NODE_ENV: production
+
+functions:
+  app:
+    handler: index.handler
+    events:
+      - http:
+          path: /{proxy+}  # Catch-all for Express routes
+          method: any
+          cors: true
+
+plugins:
+  - serverless-offline  # Allows local testing
